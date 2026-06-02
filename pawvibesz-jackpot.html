@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 PawVibesZ Jackpot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #0d0620;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    padding: 20px;
+  }
+
+  .jackpot-wrap {
+    min-height: 560px;
+    background: #1a0a2e;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 28px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+    border: 2px solid #4c1d95;
+    box-shadow: 0 0 60px #7c3aed44, 0 20px 60px #00000088;
+  }
+
+  .stars-bg {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 26px;
+  }
+  .star {
+    position: absolute; width: 3px; height: 3px;
+    background: #fff; border-radius: 50%; opacity: 0.4;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.15; } to { opacity: 0.85; } }
+
+  .jackpot-title {
+    font-family: 'Lilita One', cursive;
+    font-size: 32px;
+    color: #FFD700;
+    text-align: center;
+    text-shadow: 0 0 24px #ff990099, 0 3px 0 #b8860b;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    line-height: 1.1;
+    z-index: 2;
+  }
+  .jackpot-sub {
+    font-size: 14px;
+    color: #ffcc66;
+    text-align: center;
+    margin-bottom: 20px;
+    z-index: 2;
+    opacity: 0.92;
+    line-height: 1.6;
+  }
+  .paws { font-size: 18px; letter-spacing: 4px; display: block; margin-bottom: 4px; }
+
+  .machine-body {
+    background: linear-gradient(160deg, #2d1b5e, #1a0a2e 70%);
+    border: 3px solid #9b59b6;
+    border-radius: 22px;
+    padding: 18px 16px 16px;
+    width: 100%;
+    box-shadow: 0 0 40px #7c3aed44, inset 0 0 24px #00000060;
+    z-index: 2;
+  }
+
+  .reels-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .reel-window {
+    width: 72px; height: 72px;
+    background: #0d0620;
+    border: 3px solid #7c3aed;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 16px #000b;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    flex-shrink: 0;
+  }
+  .reel-window::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, #0d062099 0%, transparent 28%, transparent 72%, #0d062099 100%);
+    pointer-events: none; z-index: 2; border-radius: 11px;
+  }
+  .reel-window.highlight {
+    border-color: #FFD700;
+    box-shadow: 0 0 24px #FFD70099, inset 0 0 16px #000b;
+  }
+
+  .reel-track {
+    position: absolute; width: 100%;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .reel-item {
+    width: 72px; height: 72px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px;
+    flex-shrink: 0;
+  }
+
+  .spin-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    border: none; border-radius: 16px;
+    color: #fff;
+    font-family: 'Lilita One', cursive;
+    font-size: 22px;
+    padding: 15px 0;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 0 #b45309, 0 8px 28px #ef444455;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .spin-btn:hover { filter: brightness(1.08); }
+  .spin-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #b45309; }
+  .spin-btn:disabled { background: linear-gradient(135deg, #6b5533, #6b3333); cursor: not-allowed; box-shadow: none; filter: none; }
+
+  .instruction {
+    margin-top: 16px;
+    background: #2d1b5e88;
+    border: 1.5px solid #7c3aed55;
+    border-radius: 14px;
+    padding: 12px 16px;
+    color: #e0c9ff;
+    font-size: 14px;
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    line-height: 1.6;
+  }
+  .instruction strong { color: #FFD700; }
+
+  .visit-link {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #c9a8ff;
+    text-align: center;
+    z-index: 2;
+  }
+  .visit-link a {
+    color: #FFD700; text-decoration: none; font-weight: 700;
+    transition: opacity 0.15s;
+  }
+  .visit-link a:hover { opacity: 0.8; text-decoration: underline; }
+
+  /* WIN SCREEN */
+  .win-screen {
+    display: none;
+    position: absolute; inset: 0;
+    background: #FF6200;
+    border-radius: 26px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 32px 24px;
+    text-align: center;
+    animation: winPop 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes winPop { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .win-screen.active { display: flex; }
+
+  .confetti-row {
+    font-size: 28px; letter-spacing: 4px; margin-bottom: 8px;
+    animation: confettiBounce 0.7s infinite alternate;
+  }
+  @keyframes confettiBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+  .win-title {
+    font-family: 'Lilita One', cursive;
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 0 4px 0 #c04a00, 0 0 30px #fff6;
+    margin: 8px 0 4px;
+    line-height: 1.15;
+  }
+
+  .win-emoji-big {
+    font-size: 56px;
+    margin: 10px 0;
+    animation: winPulse 0.9s infinite alternate;
+  }
+  @keyframes winPulse { from { transform: scale(1); } to { transform: scale(1.18); } }
+
+  .win-sub {
+    font-size: 15px;
+    color: #fff9;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .win-result-row {
+    display: flex; gap: 6px; margin: 8px 0 16px;
+    font-size: 44px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .claim-btn {
+    background: #fff;
+    color: #c04a00;
+    font-family: 'Lilita One', cursive;
+    font-size: 19px;
+    border: none; border-radius: 16px;
+    padding: 14px 28px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #b04000;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .claim-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  .claim-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #b04000; }
+
+  .play-again-btn {
+    margin-top: 12px;
+    background: transparent;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid #fff7;
+    border-radius: 12px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .play-again-btn:hover { background: #ffffff22; }
+
+  @media (max-width: 480px) {
+    .jackpot-title { font-size: 24px; }
+    .reel-window { width: 54px; height: 54px; }
+    .reel-item { width: 54px; height: 54px; font-size: 28px; }
+    .win-title { font-size: 26px; }
+    .win-result-row { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="jackpot-wrap" id="mainWrap">
+  <div class="stars-bg" id="starsBg"></div>
+
+  <div class="jackpot-title">🐾 PawVibesZ Jackpot 🐾</div>
+  <div class="jackpot-sub">
+    <span class="paws">😻 😸 😹 😽 😺</span>
+    Spin for your purr-fect prize!
+  </div>
+
+  <div class="machine-body">
+    <div class="reels-container">
+      <div class="reel-window" id="reel0"><div class="reel-track" id="track0"></div></div>
+      <div class="reel-window" id="reel1"><div class="reel-track" id="track1"></div></div>
+      <div class="reel-window" id="reel2"><div class="reel-track" id="track2"></div></div>
+      <div class="reel-window" id="reel3"><div class="reel-track" id="track3"></div></div>
+      <div class="reel-window" id="reel4"><div class="reel-track" id="track4"></div></div>
+    </div>
+    <button class="spin-btn" id="spinBtn" onclick="spin()">🐾 SPIN! 🐾</button>
+  </div>
+
+  <div class="instruction">
+    <strong>Match 5 identical emojis → WIN a FREE Cat Zoom Session!</strong><br>
+    🐱 Live cat sessions · Zoom · Worldwide
+  </div>
+
+  <div class="visit-link">
+    Visit us at <a href="https://easypagex.github.io/meet/" target="_blank">🐾 PawVibesZ</a>
+  </div>
+
+  <!-- WIN SCREEN -->
+  <div class="win-screen" id="winScreen">
+    <div class="confetti-row">🎉🐾🎉🐾🎉</div>
+    <div class="win-title">YOU WON A FREE<br>CAT ZOOM SESSION!</div>
+    <div class="win-emoji-big">😸</div>
+    <div class="win-sub">You matched:</div>
+    <div class="win-result-row" id="winResultRow"></div>
+    <a class="claim-btn" href="https://easypagex.github.io/meet/" target="_blank">😸 Claim Your Free Session →</a>
+    <button class="play-again-btn" onclick="resetGame()">🔄 Play Again</button>
+  </div>
+</div>
+
+<script>
+const EMOJIS = ['😸','😹','😻','😽','🐱','😺','😾','🐾','💕','💛','💚','💜','💖','🎉','✨'];
+const NUM_REELS = 5;
+const ITEM_H = 72;
+
+function makeStars() {
+  const bg = document.getElementById('starsBg');
+  for (let i = 0; i < 55; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*3)+'s';
+    s.style.animationDuration = (1.5+Math.random()*2)+'s';
+    s.style.width = s.style.height = (1+Math.random()*3)+'px';
+    bg.appendChild(s);
+  }
+}
+makeStars();
+
+let reelData = Array.from({length: NUM_REELS}, () => []);
+let spinning = false;
+
+function buildTrack(trackEl) {
+  trackEl.innerHTML = '';
+  const pool = [...EMOJIS,...EMOJIS,...EMOJIS].sort(() => Math.random()-0.5);
+  pool.forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'reel-item';
+    div.textContent = e;
+    trackEl.appendChild(div);
+  });
+  return pool;
+}
+
+function initReels() {
+  for (let i = 0; i < NUM_REELS; i++) {
+    const track = document.getElementById('track'+i);
+    reelData[i] = buildTrack(track);
+    track.style.transition = 'none';
+    track.style.transform = 'translateY(0px)';
+    document.getElementById('reel'+i).classList.remove('highlight');
+  }
+}
+initReels();
+
+function spin() {
+  if (spinning) return;
+  spinning = true;
+  const btn = document.getElementById('spinBtn');
+  btn.disabled = true;
+  btn.textContent = '🐱 Spinning...';
+  for (let i = 0; i < NUM_REELS; i++) document.getElementById('reel'+i).classList.remove('highlight');
+
+  const results = [];
+  // staggered durations across 5 reels
+  const durations = [800, 1050, 1300, 1550, 1800];
+
+  // ~22% jackpot chance (5 reels is harder to win naturally)
+  const jackpot = Math.random() < 0.22;
+  const jackpotEmoji = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+
+  for (let i = 0; i < NUM_REELS; i++) {
+    const track = document.getElementById('track'+i);
+    reelData[i] = buildTrack(track);
+    track.style.transition = 'none';
+    track.style.transform = 'translateY(0px)';
+
+    let pick;
+    if (jackpot) {
+      const idx = reelData[i].indexOf(jackpotEmoji);
+      pick = idx >= 0 ? idx : Math.floor(Math.random()*reelData[i].length);
+    } else {
+      pick = Math.floor(Math.random()*reelData[i].length);
+      // For reels 1-4, actively avoid matching reel 0 to prevent accidental 5-match
+      if (i > 0) {
+        let tries = 0;
+        while (reelData[i][pick] === reelData[0][results[0]] && tries < 25) {
+          pick = Math.floor(Math.random()*reelData[i].length);
+          tries++;
+        }
+      }
+    }
+    results.push(pick);
+
+    const finalY = -(pick * ITEM_H);
+
+    (function(trackEl, dur, fY, reelIdx) {
+      setTimeout(() => {
+        trackEl.style.transition = 'none';
+        trackEl.style.transform = `translateY(${fY - 10*ITEM_H}px)`;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            trackEl.style.transition = `transform ${dur}ms cubic-bezier(0.17,0.67,0.25,1)`;
+            trackEl.style.transform = `translateY(${fY}px)`;
+          });
+        });
+      }, reelIdx * 70);
+    })(track, durations[i], finalY, i);
+  }
+
+  setTimeout(() => {
+    const emojis = results.map((pick, i) => reelData[i][pick]);
+    const isWin = emojis.every(e => e === emojis[0]);
+
+    if (isWin) {
+      for (let i = 0; i < NUM_REELS; i++) document.getElementById('reel'+i).classList.add('highlight');
+      setTimeout(() => showWin(emojis[0]), 400);
+    } else {
+      spinning = false;
+      btn.disabled = false;
+      btn.textContent = '🐾 SPIN! 🐾';
+    }
+  }, durations[NUM_REELS-1] + 150);
+}
+
+function showWin(emoji) {
+  const row = document.getElementById('winResultRow');
+  row.innerHTML = '';
+  for (let i = 0; i < NUM_REELS; i++) {
+    const s = document.createElement('span');
+    s.textContent = emoji;
+    row.appendChild(s);
+  }
+  document.getElementById('winScreen').classList.add('active');
+}
+
+function resetGame() {
+  document.getElementById('winScreen').classList.remove('active');
+  spinning = false;
+  const btn = document.getElementById('spinBtn');
+  btn.disabled = false;
+  btn.textContent = '🐾 SPIN! 🐾';
+  initReels();
+}
+</script>
+</body>
+</html>
